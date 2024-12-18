@@ -57,6 +57,8 @@ def train(config, epoch, num_epoch, epoch_iters, num_iters,
     rank = get_rank()
     world_size = get_world_size()
 
+    # print("num of train loader" , len(trainloader))
+
     for i_iter, batch in enumerate(trainloader):
         images, label, size, name_idx = batch
         images = images.to(device)

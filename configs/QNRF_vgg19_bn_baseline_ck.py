@@ -3,7 +3,7 @@
 # ]
 gpus = (0, 1,)
 log_dir = 'exp'
-workers = 12
+workers = 6
 print_freq = 30
 seed = 3035
 
@@ -82,7 +82,7 @@ train = dict(
     # './exp/NWPU/seg_hrnet/seg_hrnet_w48_2022-05-27-15-03'
     flip=True,
     multi_scale=True,
-    scale_factor=[16],
+    scale_factor=(0.5, 1/0.5),
     val_span = [-1000,-600, -600,-400, -400, -200, -200],
     downsamplerate= 1,
     ignore_label= 255

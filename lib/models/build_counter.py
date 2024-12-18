@@ -109,12 +109,18 @@ class Baseline_Counter(nn.Module):
         elif self.config.counter_type == 'withMOE':
             result = {'pre_den':{},'gt_den':{}}
             in_list = self.backbone(inputs)
+
+            # print(f"Number of feature maps from backbone: {len(in_list)}")
+            # print(f"Feature map sizes: {[f.size() for f in in_list]}")
+
             self.counter_copy.load_state_dict(self.multi_counters.state_dict())
             freeze_model(self.counter_copy)
 
             in_list = in_list[self.resolution_num[0]:self.resolution_num[-1]+1]
 
             out_list =self.upsample_module(in_list,self.multi_counters,self.counter_copy)
+            # print("out list 확인", len(out_list))
+            # print("0 out list", out_list[0].size())
             # import pdb
             # pdb.set_trace()
 
@@ -252,6 +258,9 @@ class Baseline_Counter(nn.Module):
 
             weight = torch.full(kernel,1/(kernel[0]*kernel[1])).expand(1,pre.size(1),-1,-1)
             weight =  nn.Parameter(data=weight, requires_grad=False).to(self.device)
+            
+            # print("check-----")
+            # print(f"pre size: {pre.shape}, gt size: {gt.shape}")
 
             error= (pre - gt)**2
             patch_mse=F.conv2d(error, weight,stride=kernel)

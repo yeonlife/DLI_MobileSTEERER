@@ -318,6 +318,8 @@ class one_branch_output(nn.Module):
                     # pdb.set_trace()
                     last_stage = F.interpolate(last_stage, scale_factor=2,mode='nearest')
                     last_stage = self.modulation_layer_big(last_stage)
+                    # print("out branch last_stage: ", last_stage.size())
+                    # print("out branch current_stage:", current_stage.size())
                     # last_stage = last_stage*mask[:,1,:,:].unsqueeze(1)
                     current_stage = torch.cat([current_stage, last_stage],1)
                     out_put = counter(current_stage)
@@ -332,9 +334,14 @@ class one_branch_output(nn.Module):
                     last_stage = F.interpolate(last_stage, scale_factor=2,mode='nearest')
 
 
+                    # if current_stage.size() != last_stage.size():
+                    #   current_stage = F.interpolate(current_stage, size=last_stage.shape[2:], mode='nearest')
+
                     last_stage_small = self.modulation_layer_small(last_stage)
                     last_stage_large = self.modulation_layer_big(last_stage)
 
+                    # print("current_stage:", current_stage.size())
+                    # print("last_stage: ", last_stage.size())
                     last_stage_small = last_stage_small*mask[:,0,:,:].unsqueeze(1)
                     last_stage_large = last_stage_large*mask[:,1,:,:].unsqueeze(1)
 
@@ -379,14 +386,13 @@ class upsample_module(nn.Module):
 
 
     def forward(self,in_list, counter, counter_copy):
-
         assert  len(in_list) == self.num_resolutions
         out_list = []
-
 
         output, last_stage =  self.multi_outputs[0](in_list[-1],
                                                     last_stage=None,
                                                     counter=counter_copy)
+        # print("check multi outputs:", output.size(), "last stage:", last_stage.size())
         # import numpy as np
         # import cv2
         # pred_color_map= output[:,:,10:,:].cpu().numpy()
@@ -402,6 +408,8 @@ class upsample_module(nn.Module):
             else:
                 output, last_stage = self.multi_outputs[i](in_list[-(i+1)],last_stage,
                                                            counter,out_branch=True)
+            # print("output size: ", output.size())
+
             out_list.insert(0,output)
             # import numpy as np
             # import cv2

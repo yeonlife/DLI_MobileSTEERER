@@ -30,6 +30,9 @@ class VGG(nn.Module):
             vgg.load_state_dict(model_zoo.load_url(model_urls[arch],pretrained_path) )
             features = list(vgg.features.children())
 
+            print(len(features))
+            print(features[39:52])
+
             self.stage1 = copy.deepcopy(nn.Sequential(*features[0:26]))
             self.stage2 = nn.Sequential(*features[26:39])
             self.stage3 = nn.Sequential(*features[39:52])
@@ -42,7 +45,7 @@ class VGG(nn.Module):
             vgg = models.vgg19()
             vgg.load_state_dict(model_zoo.load_url(model_urls[arch],pretrained_path))
             features = list(vgg.features.children())
-
+            
             self.stage1 = nn.Sequential(*features[0:18])
             self.stage2 = nn.Sequential(*features[18:27])
             self.stage3 = nn.Sequential(*features[27:36])

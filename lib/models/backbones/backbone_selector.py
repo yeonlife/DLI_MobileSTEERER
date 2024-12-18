@@ -18,12 +18,14 @@ from lib.models.backbones import MocCatBackbone
 from lib.models.backbones import MAEvitBackbone
 from lib.models.backbones import VGGBackbone
 from lib.models.backbones import HRBackboneFPN
+from lib.models.backbones import MobileBackbone
 from lib.utils.logger import Logger as Log
 
 all_backbones = [
  
      "MocBackbone",
-    "MocHRBackbone","MocCatBackbone", "MAEvitBackbone","VGGBackbone","HRBackboneFPN"
+    "MocHRBackbone","MocCatBackbone", "MAEvitBackbone","VGGBackbone","HRBackboneFPN",
+    "MobileBackbone"
 ]
 
 class BackboneSelector(object):
