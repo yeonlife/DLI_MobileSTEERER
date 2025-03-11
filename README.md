@@ -1,20 +1,10 @@
-# STEERER for Object Counting Baseline (ICCV 2023)
+# Mobile Steerer
 ## Introduction
-This is the official PyTorch implementation of paper: [**STEERER: Resolving Scale Variations for Counting and Localization via Selective Inheritance Learning**](https://arxiv.org/abs/2308.10468), which effectively addressed the issue of scale variations for object counting and localizaioion, demonstrating the state-of-arts counting and localizaiton performance for different catagories, such as crowd,vehicle, crops and trees ![framework](./figures/framework.png)
-
+This project introduces Mobile Steerer, a lightweight model for crowd counting. We used MobileNetV3 as the backbone and selected specific layers to fit the stage channel sizes efficiently. By optimizing the model architecture, we reduced the number of parameters to 3.9M. After training for 200 epochs, the model achieved an MAE of 85.73 and an RMSE of 152.78.
 
 # Getting started 
 
-## preparation 
-
-- **Clone this repo** in the directory (```root/```):
-
-
-```bash
-cd $root
-git clone https://github.com/taohan10200/STEERER.git
-```
-- **Install dependencies.** We use python 3.9 and pytorch >= 1.12.0 : http://pytorch.org.
+- **Install dependencies.**
 
 ```bash
 conda create -n STEERER python=3.9 -y
@@ -22,43 +12,6 @@ conda activate STEERER
 conda install pytorch==1.12.0 torchvision==0.13.0 cudatoolkit=11.3 -c pytorch
 cd ${STEERER}
 pip install -r requirements.txt
-```
-
-- <span style="color:red">**!!! Processed datasets and Pretrained-weights** </span> are available at the [OneDrive](https://pjlab-my.sharepoint.cn/:f:/g/personal/hantao_dispatch_pjlab_org_cn/EpdTPZDeIhxCpR5gr46iXyYBvEC1xo8qX96FvK8geMJs6Q?e=SGfrSS) net disk,  and you can selectively dolownd the dataset that you want to train or inference. Before starting your training and testing, you should organiza your project as the following directory tree. 
-
-````bash
-
-  $root/
-  ├── ProcessedData
-  │   ├── SHHB
-  │   ├── SHHA
-  │   ├── NWPU
-  │   ├── QNRF
-  │   │   ├── images     # the input images
-  │   │   ├── jsons      # the annotated labels
-  │   │   ├── train.txt   # the image name of train set 
-  │   │   ├── test.txt    # the image name of test set
-  │   │   ├── test_gt_loc.txt  # the localization labels for evaluation
-  │   │   └──train_gt_loc.txt  # the localization labels for train set (not used)
-  │   ├── JHU
-  │   ├── MTC
-  │   ├── JHU
-  │   ├── JHUTRANCOS_v3
-  │   └── TREE
-  ├── PretrainedModels
-  └── STEERER
-
-````
-
-## Training & Evaluation
-we provide simplify script to run baseline model with A100 GPU in STEERER_train.ipynb file.
-
-```bash
-# Run this cell to train STEERER model in STEERER_train.ipynb file
-sh ! python tools/train_cc.py --cfg=configs/QNRF_final.py --launcher="pytorch"
-
-# Run this cell to test STEERER model in STEERER_train.ipynb file
-! python tools/test_loc.py --cfg=configs/QNRF_final.py --checkpoint="exp/QNRF/MobileBackbone_mobile_large/QNRF_final_2024-12-17-15-14/Ep_427_mae_84.36152942451888_mse_150.99217291674904.pth" --launcher="pytorch"
 ```
 
 ## Reproduce Counting and Localization Performance
@@ -74,7 +27,7 @@ link: https://drive.google.com/drive/folders/1-YQBecxXN-8lb152O4y3TbGgeeDZPexe?u
 2. Very Deep Convolutional Networks for Large-scale Image Recognition, arXiv, 2014.
 3. Feature Pyramid Networks for Object Detection, CVPR, 2017.  -->
 
-# Citation
+# Reference
 
 ```
 @article{haniccvsteerer,
@@ -84,6 +37,3 @@ link: https://drive.google.com/drive/folders/1-YQBecxXN-8lb152O4y3TbGgeeDZPexe?u
   year={2023}
 }
 ```
-
-# Acknowledgement
-The released PyTorch training script borrows some codes from the [HRNet](https://github.com/HRNet/HRNet-Semantic-Segmentation) and [MMCV](https://github.com/open-mmlab/mmcv) repositories.
